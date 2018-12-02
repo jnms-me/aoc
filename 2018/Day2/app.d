@@ -8,6 +8,8 @@ void main()
     auto total2s = 0;
     auto total3s = 0;
 
+    string boxes[];
+
     foreach (id; data) {
         char finished[];
         bool canCount2 = true;
@@ -38,9 +40,35 @@ void main()
                 }
             }
         }
+        if (!canCount2 || !canCount3) {
+            boxes ~= id;
+        }
     }
 
     writeln("Total 2's\t: ", total2s);
     writeln("Total 3's\t: ", total3s);
     writeln("Checksum\t: ", total2s * total3s);
+
+    outer: foreach(currentBox; boxes) {
+        foreach(box; boxes) {
+            auto count = 0;
+            for (auto i = 0; i < currentBox.length; i++) {
+                if (currentBox[i] != box[i]) {
+                    count++;
+                }
+            }
+            if (count == 1) {
+                writeln("Box 1:\t", currentBox);
+                writeln("Box 2:\t", box);
+                string match;
+                for (auto i = 0; i < currentBox.length; i++) {
+                    if (currentBox[i] == box[i]) {
+                        match ~= currentBox[i];
+                    }
+                }
+                writeln("Matching:\t", match);
+                break outer;
+            }
+        }
+    }
 }
