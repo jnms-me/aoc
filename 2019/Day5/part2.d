@@ -118,4 +118,6 @@ void main()
 
   auto interpreter = IntCodeInterpreter(input);
   interpreter.run();
+
+  // Enter 5 in terminal
 }

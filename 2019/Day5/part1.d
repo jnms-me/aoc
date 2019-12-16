@@ -84,4 +84,6 @@ void main()
 
   auto interpreter = IntCodeInterpreter(input);
   interpreter.run();
+
+  // Enter 1 in terminal
 }
