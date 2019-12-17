@@ -1,7 +1,7 @@
 import std;
 
-static int lower = 387638;
-static int upper = 919123;
+static int lower = 387_638;
+static int upper = 919_123;
 
 void main()
 {
