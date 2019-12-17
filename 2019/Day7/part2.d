@@ -127,10 +127,10 @@ struct IntCodeInterpreter
   }
 }
 
-static void runAmp(immutable int[] memory, immutable int[] input)
+static void runInterpreterAsync(immutable int[] memory, immutable int[] input)
 {
-  auto amp = IntCodeInterpreter(memory.dup);
-  amp.run(input.dup);
+  auto interpreter = IntCodeInterpreter(memory.dup);
+  interpreter.run(input.dup);
 }
 
 void main()
@@ -155,11 +155,11 @@ void main()
             if ([a, b, c, d, e].sort.array != [5, 6, 7, 8, 9])
               continue;
 
-            Tid amp1 = spawn(&runAmp, memory.idup, [a].idup);
-            Tid amp2 = spawn(&runAmp, memory.idup, [b].idup);
-            Tid amp3 = spawn(&runAmp, memory.idup, [c].idup);
-            Tid amp4 = spawn(&runAmp, memory.idup, [d].idup);
-            Tid amp5 = spawnLinked(&runAmp, memory.idup, [e].idup);
+            Tid amp1 = spawn(&runInterpreterAsync, memory.idup, [a].idup);
+            Tid amp2 = spawn(&runInterpreterAsync, memory.idup, [b].idup);
+            Tid amp3 = spawn(&runInterpreterAsync, memory.idup, [c].idup);
+            Tid amp4 = spawn(&runInterpreterAsync, memory.idup, [d].idup);
+            Tid amp5 = spawnLinked(&runInterpreterAsync, memory.idup, [e].idup);
 
             int signal;
             int thrusters;
