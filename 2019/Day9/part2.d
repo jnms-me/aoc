@@ -1,5 +1,3 @@
-module Day9.part2;
-
 import std;
 
 struct IntCodeInterpreter
