@@ -1,0 +1,7 @@
+{
+	"fileVersion": 1,
+	"versions": {
+		"gfm": "8.0.2",
+		"intel-intrinsics": "1.2.2"
+	}
+}

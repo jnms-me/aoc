@@ -1,0 +1,12 @@
+{
+	"authors": [
+		"jonas"
+	],
+	"copyright": "Copyright © 2019, jonas",
+	"dependencies": {
+		"gfm:math": "~>8.0.2"
+	},
+	"description": "A minimal D application.",
+	"license": "proprietary",
+	"name": "part1"
+}
