@@ -2,53 +2,44 @@
 dependency "pegged" version="~>0.4.9"
 +/
 import std;
-import pegged.grammar;
 
-mixin(grammar(`
-CalibrationValue:
-    Value   < (Digit / Padding)*
-    Digit   < [0-9] / "one" / "two" / "three" / "four" / "five" / "six" / "seven" / "eight" / "nine"
-    Padding < .
-`));
+static immutable string[] englishDigits = ["one", "two", "three", "four", "five", "six", "seven", "eight", "nine"];
+static immutable string[] englishDigitsReverse = englishDigits.map!(s => s.dup.reverse).array;
 
-mixin(grammar(`
-CalibrationValueReverse:
-    Value   < (Digit / Padding)*
-    Digit   < [0-9] / "eno" / "owt" / "eerht" / "ruof" / "evif" / "xis" / "neves" / "thgie" / "enin"
-    Padding < .
-`));
+static immutable digitsRegex = ctRegex!("[0-9]|" ~ englishDigits.join("|"));
+static immutable digitsReverseRegex = ctRegex!("[0-9]|" ~ englishDigitsReverse.join("|"));
 
-enum EnglishDigits : int        { one = 1, two, three, four, five, six, seven, eight, nine }
-enum EnglishDigitsReverse : int { eno = 1, owt, eerht, ruof, evif, xis, neves, thgie, enin }
-
-string replaceEnglishDigit(alias digits)(string s)
+string findFirstDigit(string s, bool reverse)
 {
-    foreach (digit; EnumMembers!digits)
-        if (equal(s, digit.to!string))
-            return digit.to!int.to!string;
-    return s;
+    if (reverse) s = s.dup.reverse;
+    auto r = reverse ? digitsReverseRegex : digitsRegex;
+    auto match = s.matchFirst(r);
+    return match.hit;
 }
 
-dchar firstDigit(S)(S s) => s.find!isNumber.front;
+string replaceEnglishDigit(string s, bool reverse)
+{
+    auto digits = reverse ? englishDigitsReverse : englishDigits;
+    foreach (i, digit; digits)
+        if (s == digit)
+            return (i + 1).to!string;
+    return s;
+}
 
 void main()
 {
     stdin
         .byLine
-        .map!(s => [      // Parse as grammar elements twice, the second time in reverse
-            CalibrationValue(s.to!string).matches,
-            CalibrationValueReverse(s.reverse.to!string).matches
-        ])
-        .map!(p => [      // Replace english digits with single characters
-            p[0].map!(replaceEnglishDigit!(EnglishDigits)).array,
-            p[1].map!(replaceEnglishDigit!(EnglishDigitsReverse)).array
-        ])          
-        .map!(map!joiner) // Concatenate the grammar elements
-        .map!(p => [      // Select the first & last digits
-            p[0].firstDigit,
-            p[1].firstDigit
-        ]) 
-        .map!(to!int)     // Interpret as an integer
+        .map!(to!string)
+        .map!(s => tuple( // Find the first and last literal or written english digit
+            s.findFirstDigit(reverse:false),
+            s.findFirstDigit(reverse:true)
+        ))
+        .map!(t => tuple( // Replace any wrtten english digits with literal digits
+            t[0].replaceEnglishDigit(reverse:false),
+            t[1].replaceEnglishDigit(reverse:true)
+        ))
+        .map!(t => t[0].to!int * 10 + t[1].to!int) // Interpret the 2 digits as an integer
         .sum
         .writeln;
 }
