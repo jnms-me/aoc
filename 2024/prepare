@@ -1,0 +1,7 @@
+#!/bin/sh
+set -e
+if [ -z "$(command -v ldc2)" ] || [ -z "$(command -v dub)" ]; then
+    echo "Install ldc2 and dub"
+    exit 1
+fi
+dub build --build=release
