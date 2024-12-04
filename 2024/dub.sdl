@@ -1,1 +1,6 @@
 name "aoc24"
+
+buildType "release" {
+    buildOptions "releaseMode" "optimize" "inline" "noBoundsCheck"
+    dflags "-O3"
+}
