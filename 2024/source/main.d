@@ -4,7 +4,7 @@ import std.conv : to;
 import std.exception : enforce;
 import std.format : f = format;
 
-enum uint days = 8;
+enum uint days = 9;
 
 void main(string[] args)
 {
