@@ -1,0 +1,6 @@
+name "aoc25"
+
+buildType "release" {
+    buildOptions "releaseMode" "optimize" "inline" "noBoundsCheck"
+    dflags "-O3"
+}
