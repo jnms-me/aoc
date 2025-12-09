@@ -23,8 +23,7 @@ L82
     (@ id "app")
     (h1 "AOC")
     (h2 "Day 01")
-    (h3 "Part 1")
-    (h4 "Input")
+    (h3 "Input")
     (div
      (textarea
       (@ change ,(λ (event)
@@ -39,9 +38,9 @@ L82
                   (set! day01-part2-output (object->string (day01:part2:solve day01-input)))
                   (render)))
       "Submit"))
-    (h4 "Output (part 1)")
+    (h3 "Output (part 1)")
     (code ,day01-part1-output)
-    (h4 "Output (part 2)")
+    (h3 "Output (part 2)")
     (code ,day01-part2-output)))
 
 (define (render)
