@@ -1,0 +1,33 @@
+(define-module (day01 part2)
+  #:use-module (ice-9 match)
+  #:use-module (srfi srfi-1)
+  #:export (solve))
+
+(define (parse input)
+  (let* ((input-trimmed (string-trim-right input))
+         (lines (string-split input-trimmed #\nl)))
+    (map (λ (line)
+           (* (match (string-ref line 0)
+                (#\L -1)
+                (#\R 1))
+              (string->number (substring line 1))))
+         lines)))
+
+(define (norm n)
+  (if (negative? n) -1 1))
+
+(define (expand-values l)
+  (append-map (λ (el)
+                (make-list (abs el) (norm el)))
+              l))
+
+(define (rec pos l)
+  (let* ((l-front (car l))
+         (l-rest (cdr l))
+         (pos* (+ pos l-front))
+         (match? (zero? (modulo pos* 100))))
+    (+ (if match? 1 0)
+       (if (null? l-rest) 0 (rec pos* l-rest)))))
+
+(define (solve input)
+  (rec 50 (expand-values (parse input))))

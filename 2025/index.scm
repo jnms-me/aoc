@@ -1,4 +1,5 @@
 (use-modules ((day01 part1) #:prefix day01:part1:)
+             ((day01 part2) #:prefix day01:part2:)
              (dom)
              (hoot ffi))
 
@@ -35,6 +36,7 @@ L82
      (button
       (@ click ,(λ (event)
                   (set! day01-part1-output (object->string (day01:part1:solve day01-input)))
+                  (set! day01-part2-output (object->string (day01:part2:solve day01-input)))
                   (render)))
       "Submit"))
     (h4 "Output (part 1)")
